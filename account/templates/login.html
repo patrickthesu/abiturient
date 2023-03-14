@@ -1,0 +1,43 @@
+{% extends "base_generic.html" %}
+
+{% block title %}Вход в аккаунт{% endblock %}
+
+{% block content %}
+
+{% if form.errors %}
+<p class = "error-text">Неправильное имя и/или пароль<p>
+{% endif %}
+
+{% if next %}
+  {% if user.is_authenticated %}
+    <p>У вашего аккаунта нет доступа к данному ресурсу,
+    если вы не согласны, то попробуйте зайти с другого аккаунта</p>
+  {% else %}
+    <p>Пожалуйста войдите в аккаунт, чтобы зарегистрироваться.</p>
+    </p><a href = {url 'login'}>Пожалуйста войдите в аккаунт, чтобы увидеть данные этой страницы.</a></p>
+  {% endif %}
+{% endif %}
+
+<form method="post" action="{% url 'login' %}">
+{% csrf_token %}
+<table>
+
+<tr>
+  <td>{{ form.username.label_tag }}</td>
+  <td>{{ form.username }}</td>
+</tr>
+
+<tr>
+  <td>{{ form.password.label_tag }}</td>
+  <td>{{ form.password }}</td>
+</tr>
+</table>
+
+<input type="submit" value="login" />
+<input type="hidden" name="next" value="{{ next }}" />
+</form>
+
+<p><a href="{% url 'reset-password' %}">Потеряли пароль?</a></p>
+<p><a href="{% url 'signin' %}">До сих пор не зарегистрировались?</a></p>
+
+{% endblock %}

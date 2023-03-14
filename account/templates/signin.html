@@ -1,0 +1,15 @@
+{% extends "base_generic.html" %}
+
+{% block title %}Регистрация{% endblock %}
+
+{% block content %}
+<section class = "">
+<h1 class = "page-logo">Регистрация</h1>
+<form action={% url 'signin' %} method = "post">
+  {% csrf_token %}
+  {{form.as_p}}
+  <button type = "submit">Добавить</button>
+  <a href={% url 'teacher-signin'%}>Я учитель</a>
+</form>
+</section>
+{% endblock %}

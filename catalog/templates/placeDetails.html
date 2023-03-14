@@ -1,0 +1,52 @@
+{% extends "baseGeneric.html" %}
+
+{% block titile %}{% if place %}{{place.title}}{% else %}Объкта нет в базе{% endif %}{% endblock %}
+
+{% block content %}
+
+{% if place %}
+<h2 class = "content-title">{{place.title}}</h2>
+<section class = "content-block">
+  <h3 class = "seciton-title">Описание</h3>
+  <p>{{place.description}}</p>
+</section>
+{% if producer %}
+<section class="content-title">
+  <span><strong>Всего пользователей купили:</strong> {{userCount}}</span>
+  <span><strong>Оставили отзыв:</strong>{{rewCount}}</span>
+</section>
+{% endif %}
+<section class = "content-block">
+  <img class = "section-img" src = "{{place.image.url}}" alt = "Фотография объекта">
+</section>
+<section class = "content-block">
+  <h2 class = "block-title">Отзывы:</h6>
+  {% if reviews %}
+  {% for review in reviews %}
+  <div class = "block">
+    <span>Пользователь креатур</span>
+    {% if review.photo %}
+    <img class = "review-photo" src = "{{review.photo.url}}" alt = "Фотография мероприятия ">
+    {% endif %}
+    {% if review.video %}
+    <video class = "review-video" width = 400px height = 400px controls>
+      <source src="{{ review.video.url }}" type="video/mp4">
+      Ваш браузер не поддерживает видео. 
+    </video>
+    {% endif %}
+    <span> <strong>Оценка: </strong>{{review.rate}}</span>
+    <p>{{review.comment}}</p>
+ </div>
+  {% endfor %}
+  {% else %}
+  <p>У этого тура объекта отзывов.</p>
+  {% endif %}
+</section>
+
+{% else %}
+<h2 class = "section-title">Такого продукта нет на сайте</h2>
+<p class = "warning-text">Введите правильный url, или перейдте к поиску продукта</p>
+{%endif%}
+{% endblock %}
+
+

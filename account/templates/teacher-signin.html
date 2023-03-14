@@ -1,0 +1,18 @@
+{% extends "base_generic.html" %}
+
+{% block title %}Регистрация{% endblock %}
+
+
+{% block content %}
+<section class = "account-form">
+<h1 class = "page-logo">Регистрация</h1>
+<form method="post">
+  {% csrf_token %}
+  <table>
+      {{ form }}
+      {{ formset }}
+  </table>
+  <button type = "submit">Добавить</button>
+</form>
+</section>
+{% endblock %}

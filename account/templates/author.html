@@ -1,0 +1,43 @@
+{% extends "account.html" %}
+
+{% block user %}
+<section class = "actions content-section">
+  <a href = {% url 'createProduct' %}>
+    <div class = "block action">
+      <img class = "action-img" src = "routeIcon.jpg" >
+      <h3 class = "block-title">Создать маршрут</h3>
+    </div>
+  </a>
+  <a href = {% url 'createEthap' %}>
+    <div class = "block action">
+      <img class = "action-img" src = "siteIcon.jpg">
+      <h3 class = "block-title">Создать участок</h3>
+    </div>
+  </a>
+  <a href = {% url 'profileStats' %}>
+    <div class = "block action">
+      <img class = "action-img" src = "statisticIcon.jpg">
+      <h3 class = "block-title">Перейти к статистике</h3>
+    </div>
+  </a>
+</section>
+<section class = "content-section">
+  <h2 class = "section-title">Список ваших маршрутов:</h2>
+  {% if productList %}
+  {% for product in productList %}
+  <a href = {{product.getAbsoluteUrl}}>
+    <div class = "block product">
+      <img src = "{{product.headerImage.url}}" alt = "Фотография тура">
+      <h3 class = "block-title">{{product.title}}</h3>
+      <a href = "{% url 'editProduct' productPk=product.pk %}">Редактировать</a>
+      <a href = "{% url 'deactivateProduct' productPk=product.pk %}">{% if product.active %}Деактивировать{% else %}Активировать{% endif %}</a>
+    </div>
+  </a>
+  {%endfor%}
+  {% else %}
+  <p>У вас почему-то нет маршрутов (</p>
+  <p><a href = {% url 'createProduct' %}>Перейти к созданию...</a></p>
+  {% endif %}
+  <div>
+</section>
+{% endblock %}

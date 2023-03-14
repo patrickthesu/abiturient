@@ -1,0 +1,12 @@
+{% extends "baseGeneric.html" %}
+
+{% block title %}Организовать тур{% endblock %}
+
+{% block content %}
+<h2 class = "content-title">Организовать тур</h2>
+<form action = {% url 'createInstance' productPk=product.pk %} method = "post">
+  {% csrf_token %}
+  {{form}} 
+  <button type = "submit" value = "OK">Добавить</button>
+</form>
+{% endblock %}

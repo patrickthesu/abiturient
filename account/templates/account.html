@@ -1,0 +1,27 @@
+{% extends "base_generic.html" %}
+
+{% block title %}Личный кабинет{% endblock %}
+
+{% block content %}
+<h2>Вы авторизованы как {% if user.first_name %}{{user.first_name}} {{user.last_name}}{% else %}{{user.get__username}}{% endif %}</h2>
+<section>
+  <h3 class = "section-title">Уведомления:</h3>
+  {% if notifications %}
+  {% for n in notifications %}
+  <div>
+    <span>Уведомление</span>
+    <p>{{n.message}}</p>
+  </div>
+  {% endfor %}
+  {% else %}
+  <p>У вас нет уведомлений</p>
+  {% endif %}
+</section
+{% block user %}
+<p class = "warning-text">Произошла ошибка на сервере, обратитесь к администратору</p>
+{% endblock %}
+<section class = "content-block">
+  <a href = {% url 'edit-profile' %}>Редактировать свой профиль</a>
+  <a href = {% url 'logout' %}>Выйти из аккаунта</a>
+</section>
+{% endblock %}

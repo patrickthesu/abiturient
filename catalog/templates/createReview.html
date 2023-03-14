@@ -1,0 +1,26 @@
+{% extends "baseGeneric.html" %}
+
+{% block title %}Оставить отзыв{% endblock %}
+
+{% block content %}
+<h2 class = "content-title">Оставить отзыв для {{instance.touristProduct.title}} {{instance.date}}:</h2>
+<form action = {% url 'createReview' instancePk=instance.pk %} method = "post" enctype = "multipart/form-data">
+  {% csrf_token %}
+  {% for field in form %}
+  {% if field.name != 'user' %}
+  {% if field.name != 'productInstance' %}
+  <div class="fieldWrapper">
+      {{ field.errors }}
+      {{ field.label_tag }} {{ field }}
+  </div>
+  {% endif %}
+  {% endif %}
+  {% endfor %} 
+
+
+  <button type = "submit" value = "OK">Добавить</button>
+</form>
+{% endblock %}
+
+<!--  
+ /-->

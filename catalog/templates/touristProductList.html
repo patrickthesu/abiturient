@@ -1,0 +1,25 @@
+{% extends "baseGeneric.html" %}
+
+{% block title %}Список предложений{% endblock %}
+
+{% block content %}
+<h2 class = "page-logo">Все туристические предложения:</h2>
+<section class = "main-content">
+  {% if product_list %}
+  <ul>
+    {% for product in product_list %}
+    <li>
+      <img src = "{{ product.headerImage.url }}">
+      <h6 class = "block-title"><a href = {{product.getAbsoluteUrl}}>{{product.title}}</a></h6>
+      <a href = "">{{product.author.username}}</a>
+      <span>{{product.time}} | {{product.getEthapsCount}}</span>
+      <span>{{product.price}}</span>
+    </li>
+    {% endfor %}
+  <ul>
+  {% else %}
+    <p>На данный момент туристических предлжений нет</p>
+  {%endif%}
+</section>
+
+{% endblock %}

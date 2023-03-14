@@ -1,0 +1,115 @@
+{% extends "baseGeneric.html" %}
+
+{% block titile %}{% if product %}{{product.title}}{% else %}Продукта нет в базе{% endif %}{% endblock %}
+
+{% block content %}
+<section class = "content-section" id = "product-detail">
+{% if product %}
+<h2 class = "section-title">{{product.title}}</h2>
+<section class = "content-block">
+  <h3 class = "block-title">Описание:</h3>
+  <p class = "big-text">{{product.description}}</p>
+</section>
+{% if creator %}
+<section class = conten-block>
+  <a href = "{% url 'instancesList' productPk=product.pk %}">
+    <div class = "block action">
+      <img src = "listIcon.png">
+      <h6 class = "block-title">Список туров</h6>
+    </div>
+  </a>
+  <a href = "{% url 'createInstance' productPk=product.pk %}">
+    <div class = "block action">
+      <img src = "instanceIcon.png">
+      <h6 class = "block-title">Организовать тур</h6>
+    </div>
+  </a>
+  <a href = "{% url 'editProduct' productPk=product.pk %}">
+    <div class = "block action">
+      <img src = "editIcon.png">
+      <h6 class = "block-title">Редактировать продукт</h6>
+    </div>
+  </a>
+  <a href = "{% url 'deleteProduct' productPk=product.pk %}">
+    <div class = "block action">
+      <img src = "deleteIcon.png">
+      <h6 class = "block-title">Удалить продукт</h6>
+    </div>
+  </a>
+</section>
+{% endif %}
+<section class = "section-block">
+  {% if product.getEthaps %}
+  {% for ethap in product.getEthaps %}
+  <div class = "ethap block">
+    <img src = "{{ ethap.image.url }}">
+    {% if ethap.place %}<a href = {{ ethap.place.getAbsoluteUrl }}>{%endif%}<h6 class = "block-title">{{ethap.title}}</h6>{% if ethap.place %}</a>{%endif%}
+    <p>{{ethap.description}}</p>
+  </div>
+  {% endfor %}
+  {% else %}
+  <p>У данного продукта нет этапов</p>
+  {% endif %}
+</section>
+<section class = "content-block">
+  {% if product.creator %}
+  <span class = "block-title"><strong>Автор: </strong>{{product.creator.username}}</span>
+  <a class = "button" href = "">Узнать больше про этого автора</a>
+  {% else %}
+  <span class = "warnint-text">У данного тура нет автора</span>
+  {% endif %}
+  <strong>Цена: </strong><span>{{product.price}}</span>
+</section>
+{% if consumer %}
+<section class = "content-block">
+  {% for instance in instances %}
+  <div class = "block small-block">
+  <p>{{instance.date}}</p>
+  <a class = "button" href = "{% url 'bookInstance' instancePk=instance.pk %}">Записаться</a>
+  </div>
+  {% endfor %}
+</section>
+{% endif %}
+{% else %}
+<h2 class = "section-title">Такого продукта нет на сайте</h2>
+<p class = "warning-text">Введите правильный url, или перейдте к поиску продукта</p>
+<a href = "{% url 'productList' %}">Перейти к посику...</a>
+{% endif %}
+</section>
+{% if consumer %}
+<form href = "{{request.url}}" method = "post">
+    {% csrf_token %}
+    {{form.rate}}
+    {{form.comment}}
+    <input type="submit" value="Submit">
+</form>
+{% endif %}
+<section class = "content-block">
+  <h2 class = "block-title">Отзывы:</h6>
+  {% if reviews %}
+  {% for review in reviews %}
+  <div class = "block">
+    <!--<span>{{review.user.first_name}} {{review.user.last_name}}</span>-->
+ 
+    <span>Пользователь креатур</span>
+    <span>{{review.rate}}</span>
+    {% if review.photo %}
+    <img class = "review-photo" src = "{{review.photo.url}}" alt = "Фотография мероприятия ">
+    {% endif %}
+    {% if review.video %}
+    <video class = "reveiew-video" controls>
+      <source src="{{ instance.instance.video.url }}" type="video/mp4">
+      Ваш браузер не поддерживает видео. 
+    </video>
+    {% endif %}
+    <p>{{review.comment}}</p>
+    {% if review.user == request.user %}
+    <a href = "{% url 'deleteReview' reviewPk=review.pk %}">Удалить отзыв</a>
+    {% endif %}
+  </div>
+  {% endfor %}
+  {% else %}
+  <p>У этого тура ещё нет отзывов.</p>
+  {% endif %}
+</section>
+{% endblock %}

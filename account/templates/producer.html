@@ -1,0 +1,50 @@
+{% extends "account.html" %}
+
+{% block user %}
+<section class = "actions content-section">
+  <a href = {% url 'createPlace' %}>
+    <div class = "block action">
+      <img class = "action-img" src = "routeIcon.jpg" >
+      <h3 class = "block-title">Создать объект</h3>
+    </div>
+  </a>
+</section>
+<section class = "content-section">
+  <h2 class = "section-title">Список ваших объектов:</h2>
+  {% if placesList %}
+  {% for place in placesList %}
+  <a href = "{{place.getAbsoluteUrl}}">
+    <div class = "block product{% if not place.active %}deactivated{% endif %}">
+      <img src = "{{place.image.url}}" alt = "Фотография объекта">
+      <h3 class = "block-title">{{place.title}}</h3>
+      <p>{{place.description}}</p>
+      <a href = "{% url 'editPlace' placePk=place.pk %}">Изменить</a>
+      <a href = "{% url 'deactivatePlace' placePk=place.pk %}">{% if place.active %}Деактивировать{% else %}Активировать{% endif %}</a>
+    </div>
+  </a>
+  {% if place.reviews %}
+    {% for review in reviews %}
+    <span>Анонимный пользователь</span>
+    <span>Оценка: {{ review.rate }}</span>
+    {% if review.photo %}
+    <img src = "{{review.photo.url}}" alt = "Фотография мероприятия ">
+    {% endif %}
+    {% if review.video %}
+    <video controls>
+      <source src="{{ instance.instance.video.url }}" type="video/mp4">
+      Ваш браузер не поддерживает видео. 
+    </video>
+    {% endif %}
+    <p>{{review.comment}}</p>
+    {% endfor %}
+    {% else %}
+    <p>Ещё не оставляли отзывы о мерприятиях с этим местом.</p>
+    {% endif %} 
+  {%endfor%}
+  {% else %}
+  <p>У вас почему-то нет объектов (</p>
+  <p><a href = {% url 'createPlace' %}>Перейти к созданию...</a></p>
+  {% endif %}
+  <div>
+</section>
+{% endblock %}

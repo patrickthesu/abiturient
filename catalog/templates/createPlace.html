@@ -1,0 +1,21 @@
+{% extends "baseGeneric.html" %}
+
+{% block title %}Создать объект{% endblock %}
+
+{% block content %}
+<h2 class = "content-title">Создать место</h2>
+<form action = {% url 'createPlace' %} method="POST" enctype="multipart/form-data">
+  {% csrf_token %}
+  {% for field in form %}
+  {% if field.name != 'owner' %}
+  {% if field.name != 'active' %}
+  <div class="fieldWrapper">
+      {{ field.errors }}
+      {{ field.label_tag }} {{ field }}
+  </div>
+  {% endif %}
+  {% endif %}
+  {% endfor %}
+  <button type = "submit" value = "OK">Добавить</button>
+</form>
+{% endblock %}

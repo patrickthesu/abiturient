@@ -1,0 +1,11 @@
+{% extends "base_generic.html" %}
+{% block title %}Log out{% endblock %}
+
+{% block content %}
+{% if error %}
+<p class = "error-text">Произошла ошибка при попытке выйти из учетной записи, попробуйте снова</p>
+{% else %}
+<p class = "">Успешно. Вы вышли из учетной записи</p>
+<p><a href = {% url 'login' %}>Снова войти в учетную запись</a></p>
+{% endif %}
+{% endblock %}

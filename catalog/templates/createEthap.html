@@ -1,0 +1,33 @@
+{% extends "baseGeneric.html" %}
+
+{% block title %}Создать этап{% endblock %}
+
+{% block content %}
+<h1>Создать этап</h1>
+<form href = {% url 'createEthap' %} method = "post" enctype = "multipart/form-data">
+  {% csrf_token %}
+  {% for field in form %}
+  {% if field.name != 'creator' %}
+  <div class="fieldWrapper">
+      {{ field.errors }}
+      {{ field.label_tag }} {{ field }}
+  </div>
+  {% endif %}
+  {% endfor %}
+  <div class="fieldWrapper">
+  {% if productsList %}
+    <h3 class = "section-title">Добавить к продуктам:</h3>
+    {% for product in productList %}
+    <div class = "small-square" onclick>
+      <img src = "{{product.titleImage}}">
+      <span class = "title small-title">{{product.title}}</span>
+    </div>
+    {% endfor %}
+  {% else %}
+  <p class = "warning-text">У вас ещё нет туристических продуктов.=(</p>
+  <a href = {% url 'createProduct' %}>Создать продукт</p>
+  {% endif %}
+  </div>
+  <button class = "submit button" type = "submit" value = "OK">Добавить этап</button>
+</form>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "baseGeneric.html" %}
+
+{% block title %}Создать маршрут{% endblock %}
+
+{% block content %}
+<h2 class = "content-title">Создать продукт</h2>
+<form href = {% url 'createProduct' %} method = "post" enctype = "multipart/form-data">
+  {% csrf_token %}
+  {% for field in form %}
+  {% if field.name != 'creator' %}
+  <div class="fieldWrapper">
+      {{ field.errors }}
+      {{ field.label_tag }} {{ field }}
+  </div>
+  {% endif %}
+  {% endfor %}
+  <button type = "submit" value = "OK">Добавить</button>
+</form>
+{% endblock %}

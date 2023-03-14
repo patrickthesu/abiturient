@@ -1,0 +1,64 @@
+{% extends "account.html" %}
+
+{% block user %}
+<section class = "actions content-section">
+  <h2 class = "section-title">Ваше текущее мероприятие:</h2>
+  {% if currentInstance %} 
+  <img src="{{currentInstance.touristProduct.headerImage.url}}" alt = "Фотография мероприятия">
+  <h6 class = "block-title">{{currentInstance.touristProduct.title}}</h6>
+  <p>{{currentInstance.touristProduct.description}}</p>
+  <a class = "button display-block" href = "{% url 'createReview' instancePk=currentInstance.pk %}">Оставить отзыв</a>
+  {% else %}
+  <p class = "big-text">На данный момент у вас не запланировано никаких меропприятий</p>
+  {% endif %}
+</section>
+<section class = "actions content-section">
+  <h3 class = "section-title">Запланированые туристические мероприятия:</h3>
+  {% if planedInstanceList %}
+  {% for instance in planedInstanceList %}
+    <div class = "block">
+      <img src = "{{instance.touristProduct.headerImage.url}}">
+      <p>{{instance.date}}</p>
+      <span class = {{block.title}}>{{instance.touristProduct.title}}</span>
+    </div>
+  {% endfor %}
+  {% else %}
+  <p>У вас нет запланированых мероприятий.</p>
+  {% endif %}
+</section>
+<section class = "actions content-section">
+  <h3 class = "section-title">Архивные туристические мероприятия:</h3>
+  {% if archivedInstanceList %}
+  {% for instance in archivedInstanceList %}
+  <section class = "big-block">
+    <div class = "block display-block">
+      <img src = "{{intance.instance.touristProduct.headerImage.url}}">
+      <p>{{instance.instance.date}}</p>
+      <span class = {{block.title}}>{{instance.instance.touristProduct.title}}</span>
+    </div>
+    <h6 class = "block-title">Ваши отзывы:</h6>
+    {% if instance.reviews %}
+    {% for review in instance.reviews %}
+    <span>Оценка: {{ review.rate }}</span>
+    {% if review.photo %}
+    <img src = "{{review.photo.url}}" alt = "Фотография мероприятия ">
+    {% endif %}
+    {% if review.video %}
+    <video controls>
+      <source src="{{ instance.instance.video.url }}" type="video/mp4">
+      Ваш браузер не поддерживает видео. 
+    </video>
+    {% endif %}
+    <p>{{review.comment}}</p>
+    {% endfor %}
+    {% else %}
+    <p>Вы ещё не оставляли отзывы об этом мерприятии.</p>
+    <a class = "button display-block" href = "{% url 'createReview' instancePk=instance.instance.pk %}">Оставить отзыв</a>
+    {% endif %}
+  </section>
+  {% endfor %}
+  {% else %}
+  <p>На данный момент у вас нет запланированых мероприятия</p>
+  {% endif %}
+</section>
+{% endblock %}

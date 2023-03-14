@@ -1,0 +1,49 @@
+{% extends "baseGeneric.html" %}
+
+{% block title %}Список организованых туров{% endblock %}
+
+{% block content %}
+<img src = {{product.headerImage.url}} alt = "Фотография продукта">
+<h3>{{product.title}}</h3>
+<a class = "block action" href = "{% url 'createInstance' productPk=product.pk %}">Организовать новый тур</a>
+<h2 class = "content-title">Список организованых туров:</h2>
+{% if instancesList %}
+{% for instance in instancesList %}
+<div class = "block">
+  <p>{{instance.instance.date}}</p>
+  <span>{{instance.instance.users.count}}/{{instance.instance.maxParticipants}}</span>
+  <a class = "button red" href = {% url 'deleteInstance' instancePk=instance.instance.pk %}>Удалить</a>
+</div>
+<section class = "content-block">
+  <h2 class = "block-title">Отзывы:</h6>
+  {% if instance.reviews %}
+  {% for review in instance.reviews %}
+  <div class = "block">
+    <span>Пользователь креатур</span>
+    {% if review.photo %}
+    <img class = "review-photo" src = "{{review.photo.url}}" alt = "Фотография мероприятия ">
+    {% endif %}
+    {% if review.video %}
+    <video class = "review-video" controls>
+      <source src="{{ instance.instance.video.url }}" type="video/mp4">
+      Ваш браузер не поддерживает видео. 
+    </video>
+    {% endif %}
+    <span>{{review.rate}}</span>
+    <p>{{review.comment}}</p>
+    {% if review.user == request.user %}
+    <a href = "{% url 'deleteReview' reviewPk=review.pk %}">Удалить отзыв</a>
+    {% endif %}
+ </div>
+  {% endfor %}
+  {% else %}
+  <p>У этого тура ещё нет отзывов.</p>
+  {% endif %}
+</section>
+{% endfor %}
+{% else %}
+<p>Для этого продукта ещё нет туров.</p>
+<a href = "{% url 'createInstance' productPk=product.pk %}">Организовать тур.</a>
+{% endif %}
+<a class = "button display-block" href = "{% url 'productDetails' productPk=product.pk %}">Вернутся назад</a>
+{% endblock %}
