@@ -14,7 +14,7 @@ SECRET_KEY = 'django-insecure-*@f&r7jq!r1#6tm_inl-3rr=nkow=kr8_b58(fjp5_()6-ov*r
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["192.168.139.86"]
+ALLOWED_HOSTS = ["192.168.104.86", "127.0.0.1", "172.20.48.101"]
 
 
 # Application definition
@@ -29,6 +29,7 @@ INSTALLED_APPS = [
 
     'catalog',
     'account',
+    'guides',
 ]
 
 MIDDLEWARE = [
@@ -46,7 +47,7 @@ ROOT_URLCONF = 'abiturient.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'media' / 'guides' / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

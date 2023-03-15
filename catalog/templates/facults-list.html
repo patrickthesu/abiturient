@@ -1,0 +1,24 @@
+{% extends "base-generic.html" %}
+
+{% block title %}Список факультетов{% endblock %}
+
+{% block content %}
+<h2 class = "page-title">Все факультеты:</h2>
+<section class = "main-content">
+  {% if facults_list %}
+  <ul>
+    {% for faculty in facults_list %}
+    <li>
+      <h4 class = "block-title"><a href = {{faculty.getAbsoluteUrl}}>{{faculty.name}}</a></h4>
+      <p><b>Телефон:</b>{{faculty.phone}}</p>
+      <p><b>E-mail:</b><a href = "mailto:{{faculty.email}}">{{faculty.email}}</p>
+      <a class = "button" href = "{{faculty.getAbsoluteUrl}}">Подробнее...</a>
+    </li>
+    {% endfor %}
+  <ul>
+  {% else %}
+    <p>На данный момент в базе данных нет факультетов. (</p>
+  {%endif%}
+</section>
+
+{% endblock %}

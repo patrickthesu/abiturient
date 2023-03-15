@@ -1,0 +1,21 @@
+{% extends "base-generic.html" %}
+
+{% block title %}Список гайдов{% endblock %}
+
+{% block content %}
+<h2 class = "page-title">Все гайды:</h2>
+<section class = "main-content">
+  {% if guides %}
+  <ul>
+    {% for guide in guides %}
+    <li>
+      <h3 class = "block-title"><a href = {{guide.getAbsoluteUrl}}>{{guide.title}}</a></h4>
+    </li>
+    {% endfor %}
+  <ul>
+  {% else %}
+    <p>На данный момент в базе данных нет гайдов. (</p>
+  {%endif%}
+</section>
+
+{% endblock %}

@@ -1,4 +1,4 @@
-{% extends "base_generic.html" %}
+{% extends "base-generic.html" %}
 
 {% block title %}Регистрация{% endblock %}
 
@@ -9,8 +9,8 @@
 <form method="post">
   {% csrf_token %}
   <table>
-      {{ form }}
-      {{ formset }}
+      {{ forms.student_form }}
+      {{ forms.teacher_form }}
   </table>
   <button type = "submit">Добавить</button>
 </form>

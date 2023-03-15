@@ -10,6 +10,7 @@ import datetime
 # Create your views here.
 
 from catalog.models import Event, Review, WishList
+from multi_form_view import MultiModelFormView
 
 from . import services
 from . import models
@@ -26,29 +27,44 @@ def signin (request):
         return HttpResponseRedirect(reverse("login"))
 
     return render (request, "signin.html", context = {"form": form, })
+# Create your views here.
+class SigninTeacher(MultiModelFormView):
+   form_classes = {
+      'student_form' : forms.SigninAbiturientForm,
+      'teacher_form' : forms.SigninTeacherForm,
+   }
+   template_name = 'teacher-signin.html'
+   def get_success_url(self):
+      return reverse('login')
+   def forms_valid(self, forms):
+      user = forms['student_form'].save()
+      print (user)
+      if user:
+        teacher = forms['teacher_form'].save(commit=False)
+        teacher.user = user
+        teacher.save()
+      return super(SigninTeacher, self).forms_valid(forms)
 
-def signinTeacher (request):
-    ChoiceFormSet = formset_factory(forms.SigninTeacherForm, validate_min=True)
+def signinTeacherTest (request):
     if request.method == "POST":
+        form = forms.SigninAbiturientForm (request.POST) 
+        formset = forms.SigninTeacherForm (request.POST) 
         if request.POST["password"] == request.POST["repassword"]:
-            print ("password mathc")
-            form = forms.SigninAbiturientForm (request.POST) 
-            formset = ChoiceFormSet (request.POST) 
             if all([form.is_valid(),]): 
                 print ("form valid")
-                #user.add_error(None, "Ошибка регистрации")
                 user = services.signin(form)
                 if user:
                     request.POST._mutable = True
                     request.POST["user"] = f'{user.pk}'
                     request.POST._mutable = False  
-                    formset = ChoiceFormSet (request.POST) 
+                    formset = forms.SigninTeacherForm (request.POST) 
                     if formset.is_valid():
                         formset.save()
                         return HttpResponseRedirect(reverse("login"))
     else:
-        form = forms.SigninAbiturientForm()
-        formset = ChoiceFormSet()
+        form = forms.SigninAbiturientForm() 
+        formset = forms.SigninTeacherForm () 
+
 
     return render (request, "teacher-signin.html", context = {"form": form, "formset": formset})
 

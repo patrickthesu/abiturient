@@ -1,0 +1,27 @@
+{% extends "base-generic.html" %}
+
+{% block titile %}Наравления{% endblock %}
+
+{% block content %}
+<section class = "content-section" id = "directions-list">
+  <h3>Все направления</h3>
+<section class = "section-block">
+  <h3 class = "section-title">Направления:</h3>
+  {% if directions %}
+  {% for direction in directions %}
+  <div class = "ethap block">
+    <a href = {{ direction.getAbsoluteUrl }}><h5 class = "block-title">{{direction.name}}</h5></a>
+    <p><b>Количество бюджетных мест: </b>{{direction.budgets}}</p>
+    <p><b>Срок обучения: </b>{{direction.years}} года</p>
+    <p><b>Стоимость: </b>{{direction.price}} руб.</p>
+    <p><b>Факультет: </b>{{direction.faculty.name}}</p>
+    <a class = "button" href = {{ direction.getAbsoluteUrl }}>Подробнее</a>
+  </div>
+  {% endfor %}
+  {% else %}
+  <p>На данный момент в базе данных нет направлений</p>
+  <a href = "{% url 'index' %}">На главную страницу</a>
+  {% endif %}
+</section>
+</section>
+{% endblock %}

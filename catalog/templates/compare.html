@@ -1,0 +1,73 @@
+{% extends "base-generic.html" %}
+
+{% block titile %}Сравнение{% endblock %}
+
+{% block content %}
+<div class = "container">
+  <div class="row">
+    <div class ="col">
+
+      <p><b>Название: </b></p>
+      <p><b>Цена: </b> руб</p>
+      <p><b>Платных мест: </b></p>
+      <p><b>Бюджетных мест: </b></p>
+      <p><b>Срок обучения: </b>в годах</p>
+      <p><b>Наличие очной формы обучения: </b></p>
+      <p><b>Наличие заочной формы обучения: </b></p>
+      <p><b>Факультет: </b></p>
+      <p><b>Екзамены: </b></p> 
+      <p><b>Квалификация: </b></p> 
+    </div>
+    <div class ="col">
+{% if first %}
+<p>{{first.name}}</p>
+<p class = "{% if second %}{% if first.price > second.price %}red{% else %}green{% endif %}{% endif %}">{{first.price}}</p>
+<p class = "{% if second %}{% if second.payed > first.payed %}red{% else %}green{% endif %}{% endif %}">{{first.payed}}</p>
+<p class = "{% if second %}{% if second.dudgets > first.budgets %}red{% else %}green{% endif %}{% endif %}">{{first.budgets}}</p>
+<p class = "{% if second %}{% if second.online > first.online %}red{% else %}green{% endif %}{% endif %}">{{first.online}}</p>
+<p class = "{% if second %}{% if second.ofline > first.ofline %}red{% else %}green{% endif %}{% endif %}">{{first.ofline}}</p>
+<p>{{first.faculty}}</p>
+<p>{{first.getexamset}}</p>
+<p>{{first.qualification}}</p>
+{% else %}
+<p>Вы ещё не выбрали направление</p>
+{% endif %}
+    </div>
+    <div class ="col">
+{% if second %}
+<p>{{second.name}}</p>
+<p class = "{% if first.price < second.price %}red{% else %}green{% endif %}">{{second.price}}</p>
+<p class = "{% if first.payed > second.payed %}red{% else %}green{% endif %}">{{second.payed}}</p>
+<p class = "{% if first.budgets > second.budgets %}red{% else %}green{% endif %}">{{second.budgets}}</p>
+<p class = "{% if first.online > second.online %}red{% else %}green{% endif %}">{{second.online}}</p>
+<p class = "{% if first.ofline > second.ofline %}red{% else %}green{% endif %}">{{second.ofline}}</p>
+<p >{{second.faculty}}</p>
+<p>{{second.getexamset}}</p>
+<p>{{second.qualification}}</p>
+{% else %}
+<p>Вы ещё не выбрали направление</p>
+{% endif %}
+    </div>
+  </div>
+</div>
+
+{% if directions %}
+<section class = "section-block">
+  <h3 class = "section-title">Выбарть ещё направления:</h3>
+  {% for direction in directions %}
+  <div class = "ethap block">
+    <a href = "{{ request.path }}{{ direction.pk }}"><h5 class = "block-title">{{direction.name}}</h5></a>
+    <p><b>Количество бюджетных мест: </b>{{direction.budgets}}</p>
+    <p><b>Срок обучения: </b>{{direction.years}} года</p>
+    <p><b>Стоимость: </b>{{direction.price}} руб.</p>
+    <p><b>Факультет: </b>{{direction.faculty.name}}</p>
+    <a class = "button" href = {{ direction.getAbsoluteUrl }}>Подробнее</a>
+  </div>
+  {% endfor %}
+</section>
+  {% else %}
+  <p>На данный момент в базе данных нет направлений</p>
+  <a href = "{% url 'index' %}">На главную страницу</a>
+{% endif %}
+</section>
+{% endblock %}

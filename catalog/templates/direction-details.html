@@ -1,0 +1,87 @@
+{% extends "base-generic.html" %}
+
+{% block titile %}{% if direction %}{{direction.title}}{% else %}Направления нет в базе{% endif %}{% endblock %}
+
+{% block content %}
+<section class = "content-section" id = "direction-detail">
+{% if direction %}
+<h2 class = "section-title">{{direction.name}}</h2>
+<section class = "content-block">
+  <h3 class = "block-title">Описание:</h3>
+  <p class = "big-text">{{direction.description}}</p>
+</section>
+<section class = "section-block"> 
+  <h2 class = "section-title">Информация об образовательном направлении</h2>
+  <p><b>Факультет: </b>{{direction.faculty.name}}</p>
+  <p><b>Цена: </b>{{direction.price}} руб</p>
+  <p><b>Бюджетных мест: </b>{{direction.budgets}}</p>
+  <p><b>Платных мест: </b>{{direction.payed}}</p>
+  <p><b>Срок обучения: </b>{{direction.budgets}} года</p>
+  <p><b>Наличие очной формы обучения: </b>{{direction.ofline}}</p>
+  <p><b>Наличие заочной формы обучения: </b>{{direction.online}}</p>
+  <p><b>Руководитель: </b>{{direction.curator}}</p>
+  <p><b>Квалификация: </b>{{direction.qualification.name}}</p> 
+</section>
+<section class = "section-block"> 
+  <h2 class = "section-title">Документы</h2>
+  <p>Здесь должен быть план обучения</p>
+</section>
+<section class = "section-block"> 
+  <h2 class = "section-title">Минимальные балы для экзамена</h2>
+  {{direction.getexamset}} <p>no comments</p>
+</section>
+<a href = "{% url 'compare' %}{{direction.pk}}">
+<section class = "section-block"> 
+  <h2 class = "section-title">Сравнить</h2>
+</section>
+</a>
+<a href = "{% url 'guides' %}">
+<section class = "section-block"> 
+  <h2 class = "section-title">Что здесь происходит</h2>
+</section>
+</a>
+{% else %}
+<h2 class = "section-title">Такого направления нет на сайте</h2>
+<p class = "warning-text">Введите правильный url, или перейдте к поиску направления</p>
+<a href = "{% url 'directions' %}">Перейти к посику...</a>
+{% endif %}
+</section>
+{% if consumer %}
+{% if form %}
+<form href = "{{request.url}}" method = "post">
+    {% csrf_token %}
+    {{form.rate}}
+    {{form.comment}}
+    <input type="submit" value="Submit">
+</form>
+{% endif %}
+<section class = "content-block">
+  <h2 class = "block-title">Отзывы:</h6>
+  {% if reviews %}
+  {% for review in reviews %}
+  <div class = "block">
+    <!--<span>{{review.user.first_name}} {{review.user.last_name}}</span>-->
+ 
+    <span>Пользователь креатур</span>
+    <span>{{review.rate}}</span>
+    {% if review.photo %}
+    <img class = "review-photo" src = "{{review.photo.url}}" alt = "Фотография мероприятия ">
+    {% endif %}
+    {% if review.video %}
+    <video class = "reveiew-video" controls>
+      <source src="{{ instance.instance.video.url }}" type="video/mp4">
+      Ваш браузер не поддерживает видео. 
+    </video>
+    {% endif %}
+    <p>{{review.comment}}</p>
+    {% if review.user == request.user %}
+    <a href = "{% url 'deleteReview' reviewPk=review.pk %}">Удалить отзыв</a>
+    {% endif %}
+  </div>
+  {% endfor %}
+  {% else %}
+  <p>У этого тура ещё нет отзывов.</p>
+  {% endif %}
+</section>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends "base-generic.html" %}
+
+{% block titile %}{% if faculty %}{{faculty.name}}{% else %}Факультета нет в базе{% endif %}{% endblock %}
+
+{% block content %}
+<section class = "content-section" id = "faculty-detail">
+{% if faculty %}
+<h2 class = "section-title">{{faculty.name}}</h2>
+<section class = "content-block">
+  <h3 class = "block-title">Описание:</h3>
+  <p class = "big-text">{{faculty.description}}</p>
+</section>
+<section class = "content-block">
+  <h2 class = "section-title">Контакты:</h2>
+  <p><b>Декан: </b>{{faculty.dean}}</p>
+  <p><b>Адрес: </b>{{faculty.adres}}</p>
+  <p><b>Телефон: </b>{{faculty.phone}}</p>
+  <p><b>E-mail: </b><a href = "mailto:{{faculty.email}}">{{faculty.email}}</a></p>
+</section>
+<section class = "section-block">
+  <h3 class = "section-title">Направления:</h3>
+  {% if directions %}
+  {% for direction in directions %}
+  <div class = "ethap block">
+    <a href = {{ direction.getAbsoluteUrl }}><h5 class = "block-title">{{direction.name}}</h5></a>
+    <p><b>Количество бюджетных мест: </b>{{direction.budgets}}</p>
+    <p><b>Срок обучения: </b>{{direction.years}} года</p>
+    <p><b>Стоимость: </b>{{direction.price}} руб.</p>
+    <a class = "button" href = {{ direction.getAbsoluteUrl }}>Подробнее</a>
+  </div>
+  {% endfor %}
+  {% else %}
+  <p>У данного факультета нет направлений</p>
+  {% endif %}
+</section>
+{% if abiturient %}
+<a href = "{% url 'how-to-admission' %}">
+<section class = "content-block section-button">
+  <h2 class = "">Узнать как поступить</h2>
+</section>
+</a>
+<a href = "{% url 'facults' %}">
+<section class = "content-block section-button">
+  <h2 class = "">Другие факультеты</h2>
+</section>
+</a>
+{% endif %}
+{% else %}
+<h2 class = "section-title">Такого факультета нет на сайте</h2>
+<p class = "warning-text">Введите правильный url, или перейдте к поиску факультета</p>
+<a href = "{% url 'facults' %}">Перейти к посику...</a>
+{% endif %}
+</section>
+{% endblock %}
