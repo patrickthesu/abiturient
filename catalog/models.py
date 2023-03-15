@@ -112,13 +112,10 @@ class Comment(models.Model):
         return f"{self.text} | {self.user.first_name} {self.user.last_name}"
 
 class Review(models.Model):
-    event = models.ForeignKey (to = Event, on_delete = models.CASCADE)
     comment = models.TextField ( verbose_name = "Коментарий", max_length = 1000)
     rate = models.PositiveSmallIntegerField( verbose_name = "Оценка", choices=RATE_CHOISES )
+    event = models.ForeignKey (to = Event, on_delete = models.CASCADE)
     user = models.ForeignKey ( User, on_delete = models.CASCADE)
-    likes = models.PositiveIntegerField ( default = 0 )
-    dislikes = models.PositiveIntegerField ( default = 0 )
-
     def __str__ (self):
         return f"{self.comment} | {self.user.first_name} {self.user.last_name}"
 

@@ -35,7 +35,7 @@
   <h2 class = "section-title">Сравнить</h2>
 </section>
 </a>
-<a href = "{% url 'guides' %}">
+<a href = "{% url 'guides-list' %}">
 <section class = "section-block"> 
   <h2 class = "section-title">Что здесь происходит</h2>
 </section>
@@ -46,17 +46,14 @@
 <a href = "{% url 'directions' %}">Перейти к посику...</a>
 {% endif %}
 </section>
+<a href = "{% url 'leave-comment' pk=direction.pk %}">
+<section class = "section-block section-button">
+  <h2 class = "block-title">Оставить заметку</h2>
+</h2> 
+</section>
 {% if consumer %}
-{% if form %}
-<form href = "{{request.url}}" method = "post">
-    {% csrf_token %}
-    {{form.rate}}
-    {{form.comment}}
-    <input type="submit" value="Submit">
-</form>
-{% endif %}
 <section class = "content-block">
-  <h2 class = "block-title">Отзывы:</h6>
+  <h2 class = "block-title">Отзывы:</h2>
   {% if reviews %}
   {% for review in reviews %}
   <div class = "block">
@@ -76,9 +73,7 @@
     <p>{{review.comment}}</p>
     {% if review.user == request.user %}
     <a href = "{% url 'deleteReview' reviewPk=review.pk %}">Удалить отзыв</a>
-    {% endif %}
-  </div>
-  {% endfor %}
+    {% endif %} </div> {% endfor %}
   {% else %}
   <p>У этого тура ещё нет отзывов.</p>
   {% endif %}

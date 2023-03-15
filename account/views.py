@@ -60,7 +60,7 @@ def signinTeacherTest (request):
                     formset = forms.SigninTeacherForm (request.POST) 
                     if formset.is_valid():
                         formset.save()
-                        return HttpResponseRedirect(reverse("login"))
+                        return HttpResponseRedirect(reverse("admin"))
     else:
         form = forms.SigninAbiturientForm() 
         formset = forms.SigninTeacherForm () 

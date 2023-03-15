@@ -47,10 +47,11 @@
         padding: 10px
       }
 
+
     </style>
   </head>
   <body>
-    <header class = "header">
+    <header class = "header text-center">
       <a href = {% url 'index' %}><h1 class = "logo main-logo">Абитуриент</h1></a>
       {% if user.is_authenticated %}
       <a href={% url 'profile' %}>Вы вошли как: {% if user.first_name %}{{user.first_name}} {{user.last_name}}{% else %}{{user.get__username}}{% endif %}</li>
@@ -60,18 +61,26 @@
  </ul>
       <a>
       {% block navigation %}
-      <nav class = "nav-block">
+      <br>
+      <br>
+      <nav class = "nav-block text-center container">
         <ul class = "nav-ul">
-          <li class = "nav-li inline"><a href = "{% url 'index' %}">Блок 1</a></li>
-          <li class = "nav-li inline"><a href = "{% url 'index' %}">Блок 2</a></li>
-          <li class = "nav-li inline"><a href = "{% url 'index' %}">Блок 3</a></li>
+          <li class = "nav-li d-flex justify-content-center"><a href = "{% url 'directions' %}"<h3>Направления<h3></a></li>
+          <li class = "nav-li d-flex justify-content-center"><a href = "{% url 'facults' %}"<h3>Факультеты<h3></a></li>
+          <li class = "nav-li d-flex justify-content-center"><a href = "{% url 'compare' %}"<h3>Сравнение<h3></a></li>
+          <li class = "nav-li d-flex justify-content-center"><a href = "{% url 'events' %}"<h3>События<h3></a></li>
+          <li class = "nav-li d-flex justify-content-center"><a href = "{% url 'guides-list' %}"<h3>Гайды<h3></a></li>
         </ul>
       </nav>
       {% endblock %}
     </header>
     <main class = "container">
       {% block content %}
-        <p>Данная страница пуста</p>
+      <div class = "text-center">
+      <h2>Сегодня абитуриент - </h2>
+      <h2>Завтра студент -</h2>
+      <h2>Бизнесмен - Президент</h2>
+      </div>
       {% endblock %}
     </main>
     <footer>

@@ -1,0 +1,54 @@
+{% extends "base-generic.html" %}
+
+{% block titile %}{% if event %}{{event.title}}{% else %}События нет в базе{% endif %}{% endblock %}
+
+{% block content %}
+<section class = "content-section" id = "event-title">
+{% if event %}
+<h2 class = "section-title">{{event.name}}</h2>
+<section class = "content-block">
+  <h3 class = "block-title">Описание:</h3>
+  <p class = "big-text">{{event.description}}</p>
+</section>
+<section class = "section-block"> 
+  <h2 class = "section-title">Данные</h2>
+    <p>{% if event.required %}Регистрация обязательна{% else %}Регистрация не обязательна{% endif %}</p>
+    <p>{% if online %}Онланй событие{% else %}{{event.place}}{% endif %}</p>
+</section>
+<a href = "{% url 'guides-list' %}">
+<section class = "section-block"> 
+  <h2 class = "section-title">Что здесь происходит</h2>
+</section>
+</a>
+{% else %}
+<h2 class = "section-title">Такого события нет на сайте</h2>
+<p class = "warning-text">Введите правильный url, или перейдте к поиску cобытий</p>
+<a href = "{% url 'events' %}">Перейти к посику...</a>
+{% endif %}
+</section>
+{% if form %}
+<form href = "{{request.url}}" method = "post">
+    {% csrf_token %}
+    <table>
+      {{form}}
+    </table>
+    <input type="submit" value="Оставить комментарий">
+</form>
+{% endif %}
+<section class = "content-block">
+  <h2 class = "block-title">Отзывы:</h2>
+  {% if reviews %}
+  {% for review in reviews %}
+  <div class = "block">
+    <!--<span>{{review.user.first_name}} {{review.user.last_name}}</span>--> 
+    <span>Абитуриент</span>
+    <span>{{review.rate}}</span>
+    <p>{{review.comment}}</p>
+    {% if review.user == request.user %}
+    <a href = "{% url 'deleteReview' reviewPk=review.pk %}">Удалить отзыв</a>
+    {% endif %} </div> {% endfor %}
+  {% else %}
+  <p>У этого события ещё нет отзывов.</p>
+  {% endif %}
+</section>
+{% endblock %}

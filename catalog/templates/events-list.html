@@ -1,0 +1,24 @@
+{% extends "base-generic.html" %}
+
+{% block titile %}События{% endblock %}
+
+{% block title %}Список событий{% endblock %}
+
+{% block content %}
+<h2 class = "page-title">Все события:</h2>
+<section class = "main-content">
+  {% if events %}
+  <ul>
+    {% for event in events %}
+    <li>
+      <h3 class = "block-title"><a href = {{event.getAbsoluteUrl}}>{{event.title}}</a></h3>
+      <p>{% if event.required %}Регистрация обязательна{% else %}Регистрация не обязательна{% endif %}</p>
+      <p>{% if online %}Онланй событие{% else %}{{event.place}}{% endif %}</p>
+   </li>
+    {% endfor %}
+  <ul>
+  {% else %}
+    <p>На данный момент в базе данных нет событий.(</p>
+  {%endif%}
+</section>
+{% endblock %}

@@ -8,7 +8,6 @@ from . import services
 from django import forms
 
 class SigninAbiturientForm(forms.ModelForm):
-
     password = forms.CharField(max_length=255, label = "Пароль", widget=forms.PasswordInput())
     repassword = forms.CharField(max_length=255, label = "Повторите пароль", widget=forms.PasswordInput())
     group = forms.ModelChoiceField(queryset = Group.objects.all(), blank = True)

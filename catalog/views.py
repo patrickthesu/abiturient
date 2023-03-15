@@ -1,11 +1,13 @@
 from django.views import generic
 from django.shortcuts import render
-#from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
+from django.urls import reverse
 
 from django.db.models import Q
 
 
+from . import forms
 from . import models
 
 def index (request):    
@@ -16,6 +18,22 @@ def aboutUs (request):
 
 def admission (request):
     return render (request, "admission.html")
+
+def leaveComment (request, pk):
+    direction = get_object_or_404 (models.Direction, pk=pk)
+    form = forms.CommentForm
+    if request.method == "POST":
+        request.POST._mutable = True
+        request.POST["user"] = f'{request.user.pk}'
+        request.POST["direction"] = f"{pk}"
+        request.POST._mutable = False   
+        form = forms.CommentForm (request.POST) 
+        if form.is_valid(): 
+            form.save()
+            return HttpResponseRedirect(reverse("direction-details"), args=[pk])
+
+    return render (request, "leave-comment.html", context = {"form": form, "direction": direction })
+
 
 class facultsList (generic.ListView): 
     model = models.Faculty
@@ -57,17 +75,21 @@ def fullCompare (request, first, second):
 
 class eventsList (generic.ListView):
     model = models.Event
-    context_object_name = "events_list"
+    context_object_name = "events"
     template_name = "events-list.html"
-
-    def get_queryset(self):
-        return models.Event.objects.get()
 
 
 def eventDetails (request, pk):
-    event = get_object_or_404 (models.Direction, pk=pk)
+    event = get_object_or_404 (models.Event, pk=pk)
     reviews = models.Review.objects.filter (event__pk = pk)
-    
-    return render ( request, "event-details.html", context = {"event": event, "reviews": reviews , "directions_count": reviews.count()} )
 
+    form = forms.ReviewForm
+    if request.method == "POST":
+        form = forms.ReviewForm (request.POST) 
+        if form.is_valid(): 
+            form.user = f"{request.user.pk}"
+            form.event = f"{event.id}"
+            form.clean()
+            form.save()
 
+    return render ( request, "event-details.html", context = {"event": event, "reviews": reviews , "form": form} )
